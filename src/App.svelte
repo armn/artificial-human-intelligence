@@ -70,7 +70,6 @@
   onMount(async () => {
     worker.onmessage = ({ data }) => {
       if (data.message === "tick") {
-        console.log("test");
         $gameTimer = $gameTimer + 1;
         $answers = $answers + $answersPerSecond;
       }

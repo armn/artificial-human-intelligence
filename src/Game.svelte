@@ -1,4 +1,5 @@
 <script>
+  import { now } from "svelte/internal";
   import Editor from "./Editor.svelte";
   import {
     clicks,
@@ -13,6 +14,7 @@
     luckyPrice,
     customerChange,
     money,
+    guessedPrice,
   } from "./store";
 
   function buttonClick() {
@@ -47,12 +49,13 @@
   function setPrice() {
     luckyPrice.set(Math.round(Math.random() * 100));
     answerPrice.set(costValue);
+    guessedPrice.set(answerPrice);
     gameStep.set(3);
 
     const difference = $answerPrice - $luckyPrice;
-    const modifier = Math.abs(difference) / (Math.random() * 100);
+    const modifier = Math.abs(difference / 100);
     if (difference > 0) {
-      customerChange.set(Math.abs($customers * modifier - $customers));
+      customerChange.set(Math.abs($customers * modifier));
       customers.set($customers - $customerChange);
     } else if (difference === 0) {
       customerChange.set(0);
@@ -65,6 +68,9 @@
   function sellAnswers() {
     $money = $money + ($answers * $customers * $answerPrice) / 100;
     $answers = 0.0;
+    if ($gameStep === 3) {
+      $gameStep = 4;
+    }
   }
 </script>
 
@@ -108,15 +114,14 @@
     {#if $luckyPrice < $answerPrice}
       <strong>You set the price too high!</strong> As a result, you lost
       <mark>{Math.round($customerChange)}</mark>
-      customers.
+      customers. Nevertheless, you can start making money now!
     {:else if $luckyPrice === $answerPrice}
-      <strong>You were spot on!</strong>
+      <strong>You were spot on!</strong> Let's start making money right now.
     {:else if $luckyPrice > $answerPrice}
       <strong>You undercut yourself.</strong> However, you gained
       <mark>{Math.round($customerChange)}</mark>
-      new customers!
+      new customers! And you can start making money now!
     {/if}
-    And you can start making money now!
   </p>
 {/if}
 
@@ -193,37 +198,39 @@
     <br />
     <button disabled={!costValid} on:click={setPrice}>Set price</button>
   {:else if $gameStep >= 3}
-    <p style="display: flex; gap: 5px; flex-wrap: wrap;">
-      You can sell <mark
-        >{Intl.NumberFormat("en-US", {
-          notation: "compact",
-          maximumFractionDigits: 2,
-          roundingPriority: "lessPrecision",
-        }).format($answers)}</mark
-      >
-      answers to
-      <mark
-        >{Intl.NumberFormat("en-US", {
-          notation: "compact",
-          maximumFractionDigits: 2,
-          roundingPriority: "lessPrecision",
-        }).format($customers)}</mark
-      >
-      customers for
-      <strong
-        ><mark
+    <div class="sell">
+      <p>
+        You can sell <mark
           >{Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-            currencyDisplay: "narrowSymbol",
             notation: "compact",
             maximumFractionDigits: 2,
             roundingPriority: "lessPrecision",
-          }).format(($answers * $customers * $answerPrice) / 100)}</mark
-        ></strong
-      >
-    </p>
-    <button on:click={sellAnswers}>Sell now</button>
+          }).format($answers)}</mark
+        >
+        answers to
+        <mark
+          >{Intl.NumberFormat("en-US", {
+            notation: "compact",
+            maximumFractionDigits: 2,
+            roundingPriority: "lessPrecision",
+          }).format($customers)}</mark
+        >
+        customers for
+        <strong
+          ><mark
+            >{Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: "USD",
+              currencyDisplay: "narrowSymbol",
+              notation: "compact",
+              maximumFractionDigits: 2,
+              roundingPriority: "lessPrecision",
+            }).format(($answers * $customers * $answerPrice) / 100)}</mark
+          ></strong
+        >
+      </p>
+      <button on:click={sellAnswers}>Sell now</button>
+    </div>
   {/if}
 </div>
 
@@ -234,5 +241,14 @@
 
   .invalid {
     border-color: red;
+  }
+  .sell {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    border: 1px solid black;
+    padding: 1rem;
+    width: 100%;
+    justify-content: space-between;
   }
 </style>
