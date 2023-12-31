@@ -1,0 +1,25 @@
+import { writable } from "svelte-persistent-store/local.js";
+
+export const name = writable("name", "");
+export const editorSpeed = writable("editorSpeed", 1);
+export const introDone = writable("introDone", false);
+export const captchaTimer = writable("captchaTimer", 0);
+export const captchaCompleted = writable("captchaCompleted", false);
+export const gameTimer = writable("gameTimer", 0);
+export const gameStarted = writable("gameStarted", false);
+export const training = writable("training", 0);
+export const answers = writable("answers", 0);
+export const answersPerSecond = writable("answersPerSecond", 0);
+export const codeTasks = writable("codeTasks", 0);
+export const clicks = writable("clicks", 0);
+export const clickMultiplier = writable("clickMultiplier", 1);
+export const maxClicks = writable("maxClicks", 0);
+export const economy = writable("economy", 100000000000000);
+export const lossPerSecond = writable("lossPerSecond", 0);
+export const gameStep = writable("gameStep", 0);
+export const customers = writable("customers", 0);
+export const customersPerSecond = writable("customersPerSecond", 0);
+export const answerPrice = writable("answerPrice", 0);
+export const luckyPrice = writable("luckyPrice", 0);
+export const customerChange = writable("customerChange", 0);
+export const money = writable("money", 0);

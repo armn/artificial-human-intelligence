@@ -1,0 +1,222 @@
+@import url("https://rsms.me/inter/inter.css");
+html {
+  font-family: "Inter", sans-serif;
+}
+@supports (font-variation-settings: normal) {
+  html {
+    font-family: "Inter var", sans-serif;
+  }
+}
+
+:root {
+  --box-shadow: 6px 6px 18px #d7d7d7, -6px -6px 18px #e9e9e9;
+  --red: #ff0000;
+  --green: #00ff00;
+  --yellow: #ffff00;
+}
+
+html,
+body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+span {
+  display: inline-block;
+}
+
+.input--h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  border: none;
+  line-height: 1;
+  padding: 0 0.2rem;
+}
+
+html,
+body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  color: #333;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Inter", "Open Sans", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue",
+    sans-serif;
+}
+
+@font-face {
+  font-family: Bahnschrift;
+  font-style: normal;
+  font-weight: 400;
+  src: local("Bahnschrift Regular"),
+    url("/assets/fonts/BAHNSCHRIFT.woff") format("woff");
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "Bahnschrift", sans-serif;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 3.052rem;
+}
+
+.card {
+  width: 100%;
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 8px 16px 0 rgba(17, 19, 46, 0.37);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: all 0.3s ease-in-out;
+  align-items: center;
+  padding: 0.75rem 1rem 1rem 1rem;
+  user-select: none;
+}
+
+.card small {
+  margin-top: 0.25rem;
+}
+
+.card:hover {
+  box-shadow: 0 8px 32px 0 rgba(17, 19, 46, 0.52);
+}
+
+.card__label {
+  margin: 0;
+  font-family: "Open Sans";
+  font-weight: 400;
+  font-size: 1rem;
+  margin-bottom: 0.1rem;
+}
+
+.card__value {
+  margin: 0;
+}
+
+h2 {
+  font-size: 2.441rem;
+}
+
+h3 {
+  font-size: 1.953rem;
+}
+
+h4 {
+  font-size: 1.563rem;
+}
+
+h5 {
+  font-size: 1.25rem;
+}
+
+a {
+  color: rgb(0, 100, 200);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:visited {
+  color: rgb(0, 80, 160);
+}
+
+label {
+  display: block;
+}
+
+input,
+button,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0.45rem;
+  margin: 0;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+}
+
+form {
+  display: flex;
+  gap: 5px;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+input:disabled {
+  color: #ccc;
+}
+
+button {
+  color: #333;
+  background-color: #f4f4f4;
+  outline: none;
+}
+
+button:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+}
+
+button:not(:disabled):active {
+  background-color: #ddd;
+}
+
+button:focus {
+  border: 0.0625rem solid #f6ddd8;
+}
+
+button {
+  align-items: center;
+  appearance: none;
+  background-color: #fb6340;
+  border: 0.0625rem solid #fb6340;
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: "Bahnschrift";
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 16px;
+  justify-content: center;
+  line-height: 1rem;
+  margin: 0;
+  overflow: hidden;
+  padding: 0.5rem 1.125rem;
+  text-align: center;
+  text-transform: none;
+  transition: all 0.15s ease-in;
+  user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+}
