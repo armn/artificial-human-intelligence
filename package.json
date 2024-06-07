@@ -1,5 +1,5 @@
 {
-  "name": "svelte-app",
+  "name": "artificial-human-intelligence",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -25,5 +25,6 @@
     "svelte-inline-input": "^1.2.1",
     "svelte-persistent-store": "^0.1.6",
     "svelte-preprocess": "^4.7.4"
-  }
+  },
+  "packageManager": "yarn@1.22.21+sha1.1959a18351b811cdeedbd484a8f86c3cc3bbaf72"
 }
