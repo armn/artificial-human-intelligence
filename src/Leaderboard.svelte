@@ -109,7 +109,7 @@
         roundingPriority: "lessPrecision",
       }).format($customers)}</mark
     >
-    customers and made
+    customers and ended with
     <strong
       ><mark
         >{Intl.NumberFormat("en-US", {
@@ -183,8 +183,7 @@
 
   .browser-window {
     text-align: left;
-    width: $width;
-    display: block;
+    width: 100%;
     border-radius: 5px;
     background-color: #fff;
     box-shadow: var(--box-shadow);
@@ -222,7 +221,6 @@
   }
   .browser-window .content {
     margin: 0;
-    width: 100%;
     //height: calc(100% - 30px);
     display: block;
     border-radius: 0 0 5px 5px;
@@ -243,10 +241,16 @@
     border: 1px solid black;
     padding: 0.5rem;
   }
+  table {
+    overflow: hidden;
+    border-collapse: collapse;
+  }
   table td span {
     display: block;
-    max-width: 100%;
+    max-width: 320px;
     overflow-wrap: break-word;
+    overflow: hidden;
+    text-overflow: break-word;
   }
 
   table th {
