@@ -24,3 +24,7 @@ export const luckyPrice = writable("luckyPrice", 0);
 export const customerChange = writable("customerChange", 0);
 export const money = writable("money", 0);
 export const guessedPrice = writable("guessedPrice", 0);
+export const answerGenerationPrice = writable("answerGenerationPrice", 2);
+export const customerFindingPrice = writable("customerFindingPrice", 10);
+export const customersAdded = writable("customersAdded", 0);
+export const gameCompleted = writable("gameCompleted", false);

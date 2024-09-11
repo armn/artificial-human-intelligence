@@ -1,5 +1,6 @@
 <script>
   import Browser from "./Browser.svelte";
+  import Leaderboard from "./Leaderboard.svelte";
   import Editor from "./Editor.svelte";
   import InlineInput from "svelte-inline-input";
   import { onMount } from "svelte";
@@ -24,6 +25,7 @@
     customers,
     money,
     answerPrice,
+    gameCompleted,
   } from "./store";
   import ChatInput from "./ChatInput.svelte";
   import Game from "./Game.svelte";
@@ -70,8 +72,13 @@
   onMount(async () => {
     worker.onmessage = ({ data }) => {
       if (data.message === "tick") {
-        $gameTimer = $gameTimer + 1;
-        $answers = $answers + $answersPerSecond;
+        if (!$gameCompleted) {
+          $gameTimer = $gameTimer + 1;
+          $answers = $answers + $answersPerSecond;
+        }
+        if ($gameCompleted) {
+          worker.terminate();
+        }
       }
     };
   });
@@ -93,14 +100,18 @@
   }
 
   function registerClick() {
-    clicks.set($clicks + 1);
-    maxClicks.set($maxClicks + 1);
+    if (!$gameCompleted) {
+      clicks.set($clicks + 1);
+      maxClicks.set($maxClicks + 1);
+    }
   }
 </script>
 
 <main on:click={registerClick} on:keypress>
-  <div class="logo"><mark>Artificial Human Intelligence</mark></div>
-  {#if $money >= 8}
+  <div class="logo">
+    <mark>Artificial Human Intelligence</mark> <small>v.1.0</small>
+  </div>
+  {#if $money > 0 && !$gameCompleted}
     <div class="economy">
       <small>MONEY</small><br />
       <strong
@@ -112,8 +123,12 @@
       >
     </div>
   {/if}
-  <h1>{$gameStarted ? convertSToTime($gameTimer) : "Hi! 👋"}</h1>
-  {#if $training}
+  {#if !$gameCompleted}
+    <h1>
+      {$gameStarted ? convertSToTime($gameTimer) : "Hi! 👋"}
+    </h1>
+  {/if}
+  {#if $training && !$gameCompleted}
     <div class="wallet">
       <div
         class="wallet__item"
@@ -295,8 +310,10 @@
     <div in:fade={{ delay: 5000, duration: 1000 }} style="text-align: center;">
       <button on:click={() => codeTasks.set(6)}>Superb, what's next?</button>
     </div>
-  {:else if $codeTasks >= 6}
+  {:else if $codeTasks >= 6 && !$gameCompleted}
     <Game />
+  {:else if $gameCompleted}
+    <Leaderboard />
   {/if}
 </main>
 

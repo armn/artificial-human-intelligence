@@ -20,6 +20,7 @@
   "dependencies": {
     "@macfja/svelte-persistent-store": "^2.4.1",
     "comlink": "^4.4.1",
+    "pocketbase": "^0.21.5",
     "sass": "latest",
     "sirv-cli": "^1.0.0",
     "svelte-inline-input": "^1.2.1",

@@ -1,5 +1,4 @@
 <script>
-  import { now } from "svelte/internal";
   import Editor from "./Editor.svelte";
   import {
     clicks,
@@ -15,7 +14,21 @@
     customerChange,
     money,
     guessedPrice,
+    answerGenerationPrice,
+    customerFindingPrice,
+    customersAdded,
+    captchaTimer,
+    gameCompleted,
+    customersPerSecond,
+    name,
+    maxClicks,
   } from "./store";
+  import PocketBase from "pocketbase";
+
+  const url = "https://ahi.pockethost.io/";
+  const client = new PocketBase(url);
+
+  let playerName = "";
 
   function buttonClick() {
     clicks.set(($clicks + 1) * $clickMultiplier);
@@ -70,6 +83,43 @@
     $answers = 0.0;
     if ($gameStep === 3) {
       $gameStep = 4;
+    }
+  }
+
+  function increaseAnswerSpeed() {
+    $money = $money - $answerGenerationPrice;
+    $answerGenerationPrice = $answerGenerationPrice * 2;
+    $answersPerSecond = $answersPerSecond * 2;
+  }
+
+  function increaseCustomers() {
+    const luck = Math.random() * 10;
+    $money = $money - $customerFindingPrice;
+    $customersAdded = $customers * luck;
+    $customers = $customers + $customersAdded;
+    $customerFindingPrice = $customerFindingPrice + $customers * 2;
+  }
+
+  async function submitToLeaderboard() {
+    $name = playerName;
+    const data = {
+      name: playerName,
+      captchaTimer: $captchaTimer,
+      gameTimer: $gameTimer,
+      answers: $answers,
+      answersPerSecond: $answersPerSecond,
+      maxClicks: $maxClicks,
+      customers: $customers,
+      customersPerSecond: $customersPerSecond,
+      answerPrice: $answerPrice,
+      luckyPrice: $luckyPrice,
+      money: $money,
+      guessedPrice: $guessedPrice,
+    };
+
+    const record = await client.collection("scores").create(data);
+    if (record) {
+      $gameCompleted = true;
     }
   }
 </script>
@@ -198,7 +248,7 @@
     <br />
     <button disabled={!costValid} on:click={setPrice}>Set price</button>
   {:else if $gameStep >= 3}
-    <div class="sell">
+    <div class="buy">
       <p>
         You can sell <mark
           >{Intl.NumberFormat("en-US", {
@@ -229,8 +279,83 @@
           ></strong
         >
       </p>
-      <button on:click={sellAnswers}>Sell now</button>
+      <button on:click={sellAnswers}>Sell</button>
     </div>
+    {#if $money > 0}
+      <div class="buy">
+        <p>
+          You can increase answer generation speed by <mark
+            >{Intl.NumberFormat("en-US", {
+              notation: "compact",
+              maximumFractionDigits: 2,
+              roundingPriority: "lessPrecision",
+            }).format($answersPerSecond * 2)}</mark
+          >
+          for
+          <strong
+            ><mark
+              >{Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+                currencyDisplay: "narrowSymbol",
+                notation: "compact",
+                maximumFractionDigits: 2,
+                roundingPriority: "lessPrecision",
+              }).format($answerGenerationPrice)}</mark
+            ></strong
+          >
+        </p>
+        <button
+          disabled={$money < $answerGenerationPrice}
+          on:click={increaseAnswerSpeed}>Increase</button
+        >
+      </div>
+    {/if}
+    {#if $money > 0}
+      <div class="buy">
+        <p>
+          You can look for new customers for
+          <strong
+            ><mark
+              >{Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+                currencyDisplay: "narrowSymbol",
+                notation: "compact",
+                maximumFractionDigits: 2,
+                roundingPriority: "lessPrecision",
+              }).format($customerFindingPrice)}</mark
+            ></strong
+          >{#if $customersAdded}
+            <br /><small>
+              <mark
+                >{Intl.NumberFormat("en-US", {
+                  notation: "compact",
+                  maximumFractionDigits: 2,
+                  roundingPriority: "lessPrecision",
+                }).format($customersAdded)}</mark
+              > new customers found</small
+            >
+          {/if}
+        </p>
+        <button
+          disabled={$money < $customerFindingPrice}
+          on:click={increaseCustomers}>Find</button
+        >
+      </div>
+    {/if}
+
+    {#if $clicks > 100}
+      <div class="buy">
+        <p>
+          You can end the game and submit your score
+          <input type="text" placeholder="Your name" bind:value={playerName} />
+        </p>
+        <button disabled={!playerName} on:click={submitToLeaderboard}
+          >End game</button
+        >
+      </div>
+    {/if}
   {/if}
 </div>
 
@@ -242,13 +367,15 @@
   .invalid {
     border-color: red;
   }
-  .sell {
+  .sell,
+  .buy {
     display: flex;
     gap: 5px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     border: 1px solid black;
     padding: 1rem;
     width: 100%;
     justify-content: space-between;
+    margin-bottom: 1rem;
   }
 </style>
