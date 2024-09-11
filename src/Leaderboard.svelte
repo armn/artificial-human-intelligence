@@ -44,7 +44,7 @@
   let records;
   onMount(async () => {
     records = await client.collection("scores").getFullList({
-      sort: "-gameTimer",
+      sort: "-created",
     });
   });
   function newGame() {
