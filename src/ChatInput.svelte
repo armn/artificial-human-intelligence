@@ -12,7 +12,7 @@
 
   function submitAnswer(e) {
     e.preventDefault();
-    if (answer == solution) {
+    if (answer.replace(/\s+/g, "") == solution) {
       inputVisible = false;
       isCorrect = true;
     } else {

@@ -109,7 +109,7 @@
 
 <main on:click={registerClick} on:keypress>
   <div class="logo">
-    <mark>Artificial Human Intelligence</mark> <small>v.1.0</small>
+    <mark>Artificial Human Intelligence</mark> <small>v.1.1</small>
   </div>
   {#if $money > 0 && !$gameCompleted}
     <div class="economy">

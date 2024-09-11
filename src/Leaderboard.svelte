@@ -67,9 +67,9 @@
     let sortModifier = sortBy.ascending ? 1 : -1;
 
     let sort = (a, b) =>
-      a[column] < b[column]
+      Number(a[column]) < Number(b[column])
         ? -1 * sortModifier
-        : a[column] > b[column]
+        : Number(a[column]) > Number(b[column])
           ? 1 * sortModifier
           : 0;
 
@@ -123,8 +123,6 @@
       >
     </strong> money.
   </p>
-
-  <h2>Thank you for playing!</h2>
 </div>
 <div class="browser-window">
   <div class="top-bar">
@@ -141,7 +139,7 @@
       <table>
         <thead>
           <tr>
-            <th on:click={sort("name")}>Name</th>
+            <th>Name</th>
             <th on:click={sort("gameTimer")}>Time</th>
             <th on:click={sort("captchaTimer")}>Captcha</th>
             <th on:click={sort("maxClicks")}>Clicks</th>
